@@ -2,7 +2,8 @@
 #include <cilk/cilk_api.h>
 #include <iostream>
 #include <stdlib.h>
-#define BASE 10
+#include <ctime>
+#define BASE 100
 
 using namespace std;
 
@@ -26,7 +27,8 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 	int N = atoi(argv[1]);
-
+	clock_t tStart;
+	tStart = clock();
 
 	int* arr = new int[N];
 	srand (time(NULL));
@@ -42,6 +44,7 @@ int main(int argc, char* argv[]) {
 	vadd(arr, sum, largest, N);
 	
         delete[] arr;
+//	cout << "Time Elapsed: " << (double)(clock() - tStart) / CLOCKS_PER_SEC << endl;
 
 	cout << "Maximum: " << largest << "; Sum: " << sum << endl;
 	return 0;

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string>
+#include <ctime>
 
 using namespace std;
 
@@ -11,6 +12,8 @@ int main(int argc, char* argv[]) {
 	}
 	int N = atoi(argv[1]);
 
+	clock_t tstart;
+	tstart = clock();
 
 	int* arr = new int [N];
 	srand (time(NULL));
@@ -32,6 +35,7 @@ int main(int argc, char* argv[]) {
 
 	delete[] arr;
 	
+//	cout << "Time Elapsed: " << (double)(clock() - tstart)/CLOCKS_PER_SEC << endl;
 	cout << "Maximum: " << largest << "; Sum: " << sum << endl;
 	return 0;
 }
