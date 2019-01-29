@@ -1,8 +1,24 @@
+#include <cilk/cilk.h>
+#include <cilk/cilk_api.h>
 #include <iostream>
 #include <stdlib.h>
-#include <string>
+#define BASE 10
 
 using namespace std;
+
+void vadd (int* arr, int& sum, int& largest, int n) {
+	if (n <= BASE) {
+		for (int i = 0; i < n; i++) {
+			sum += arr[i];
+			if(arr[i] > largest) largest = arr[i];
+		}
+	}
+	else {
+		cilk_spawn vadd(arr, sum, largest, n/2);
+		vadd (arr + n/2, sum, largest, n - n/2);
+		cilk_sync;
+	}
+} 
 
 int main(int argc, char* argv[]) {
 	if (argc != 2) {
@@ -12,7 +28,7 @@ int main(int argc, char* argv[]) {
 	int N = atoi(argv[1]);
 
 
-	int* arr = new int [N];
+	int* arr = new int[N];
 	srand (time(NULL));
 
 	for (int i = 0; i < N; i++) {
@@ -20,17 +36,10 @@ int main(int argc, char* argv[]) {
 		arr[i] = temp;
 	}
 
-	unsigned long sum = 0;
+	int sum = 0;
 	int largest = 0;
 
-	for (int i = 0; i < N; i++) {
-		sum += arr[i];
-		if(arr[i] > largest) {
-			largest = arr[i];
-		}
-	}
-
-	delete arr;
+	vadd(arr, sum, largest, N);
 	
 	cout << "Maximum: " << largest << "; Sum: " << sum << endl;
 	return 0;
