@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	delete arr;
+	delete[] arr;
 	
 	cout << "Maximum: " << largest << "; Sum: " << sum << endl;
 	return 0;

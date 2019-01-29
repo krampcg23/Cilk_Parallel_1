@@ -41,6 +41,8 @@ int main(int argc, char* argv[]) {
 
 	vadd(arr, sum, largest, N);
 	
+        delete[] arr;
+
 	cout << "Maximum: " << largest << "; Sum: " << sum << endl;
 	return 0;
 }
