@@ -3,33 +3,32 @@
 #include <iostream>
 #include <stdlib.h>
 #include <ctime>
-#include <vector>
-#define BASE 100
+#include <algorithm>
+#define BASE 1000
 
 using namespace std;
 
-unsigned* vadd (int* arr, int n) {
+int* vadd (int* arr, int n) {
 	if (n <= BASE) {
-		unsigned sum = 0;
-		unsigned largest = 0;
-		unsigned* vec = new unsigned[2];
+		int sum = 0;
+		int largest = 0;
+		int* vec = new int[2];
 		for (int i = 0; i < n; i++) {
 			sum += arr[i];
-			if(arr[i] > largest) largest = arr[i];
+			largest = max(largest, arr[i]);
 		}
 		vec[0] = sum; vec[1] = largest;
 		return vec;
 	}
 	else {
-		unsigned* v1 = new unsigned[2];
-		unsigned* v2 = new unsigned[2];
+		int* v1 = new int[2];
+		int* v2 = new int[2];
 		v1 = cilk_spawn vadd(arr, n/2);
 		v2 = cilk_spawn vadd (arr + n/2, n - n/2);
 		cilk_sync;
-		unsigned* returning = new unsigned[2];
+		int* returning = new int[2];
 		returning[0] = v1[0] + v2[0];
-		if (v1[1] > v2[1]) returning[1] = v1[1];
-		else returning[1] = v2[1];
+		returning[1] = max(v1[1], v2[1]);
 		delete[] v1; delete[] v2;
 		return returning;
 	}
@@ -52,7 +51,7 @@ int main(int argc, char* argv[]) {
 		arr[i] = temp;
 	}
 
-	unsigned* vec = new unsigned[2];
+	int* vec = new int[2];
 	vec = vadd(arr, N);
 	
         delete[] arr;

@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 
 	delete[] arr;
 	
-//	cout << "Time Elapsed: " << (double)(clock() - tstart)/CLOCKS_PER_SEC << endl;
+	cout << "Time Elapsed: " << (double)(clock() - tstart)/CLOCKS_PER_SEC << endl;
 	cout << "Maximum: " << largest << "; Sum: " << sum << endl;
 	return 0;
 }
